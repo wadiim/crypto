@@ -2,6 +2,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.math.BigInteger;
 
@@ -156,5 +158,52 @@ public class SHA1Test {
                 hash.splitIntoWords(new byte[] {
                         0x12, 0x34, 0x56, 0x78, 0x11, 0x23, 0x58, 0x13, 0x0B, 0x0D, 0x13, 0x37
                 }));
+    }
+
+    @Test
+    void TestSplitIntoWordsIfBlockContainingNegativeByteThenThatByteIsHandledCorrectly() {
+        assertArrayEquals(new int[] { 0x48617368, 0x206D6580 },
+                hash.splitIntoWords(new byte[] {
+                        0x48, 0x61, 0x73, 0x68, 0x20, 0x6D, 0x65, (byte) (1 << 7)
+                }));
+    }
+
+    @Test
+    void TestSplitIntoBytesIfNoWordsThenReturnsNoBytes() {
+        assertEquals(0, hash.splitIntoBytes(new int[0]).length);
+    }
+
+    @Test
+    void TestSplitIntoBytesIfASingleWordThenReturnsEightBytes() {
+        assertEquals(4, hash.splitIntoBytes(new int[1]).length);
+    }
+
+    @Test
+    void TestSplitIntoBytesIfASingleWordThenReturnsBytesFromThatWord() {
+        assertArrayEquals(new byte[] { 0x12, 0x34, 0x56, 0x78 }, hash.splitIntoBytes(new int[] { 0x12345678 }));
+    }
+
+    @Test
+    void TestSplitIntoBytesIfMultipleWordsThenReturnsCorrectBytes() {
+        assertArrayEquals(new byte[] { 0x12, 0x34, 0x56, 0x78, 0x11, 0x23, 0x58, 0x13, 0x0B, 0x0D, 0x13, 0x37 },
+                hash.splitIntoBytes(new int[] { 0x12345678, 0x11235813, 0x0B0D1337 }));
+    }
+
+    @Test
+    void TestGetDigestIfEmptyMessageThenReturnsEmptyDigest() {
+        assertEquals(0, hash.getDigest(new byte[0]).length);
+    }
+
+    @Test
+    void TestGetDigestIfNonEmptyMessageThenTheDigestHasCorrectSize() {
+        assertEquals(SHA1.DIGEST_SIZE_IN_BITS / Byte.SIZE,
+                hash.getDigest(new byte[] { 0x1, 0x3, 0x3, 0x7 }).length);
+    }
+
+    @Test
+    void TestGetDigestIfNonEmptyMessageThenReturnsCorrectDigest() throws NoSuchAlgorithmException {
+        assertArrayEquals(MessageDigest.getInstance("SHA-1").digest("Hash me".getBytes()),
+                hash.getDigest("Hash me".getBytes())
+        );
     }
 }

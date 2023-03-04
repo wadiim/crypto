@@ -1,4 +1,5 @@
 import java.math.BigInteger;
+import java.nio.ByteBuffer;
 import java.util.Arrays;
 
 /**
@@ -7,10 +8,67 @@ import java.util.Arrays;
 public class SHA1 implements Hash {
     public static final int WORD_SIZE_IN_BITS = 32;
     public static final int BLOCK_SIZE_IN_BITS = 512;
+    public static final int DIGEST_SIZE_IN_BITS = 160;
 
     @Override
     public byte[] getDigest(byte[] message) {
-        return new byte[0];
+        if (message.length == 0) {
+            return new byte[0];
+        }
+
+        byte[][] M = splitIntoBlocks(addPadding(message));
+        int[] H = new int[] { 0x67452301, 0xefcdab89, 0x98badcfe, 0x10325476, 0xc3d2e1f0 };
+
+        for (byte[] block : M) {
+            int[] W = new int[80];
+
+            // Prepare the message schedule
+            int[] words = splitIntoWords(block);
+            System.arraycopy(words, 0, W, 0, words.length);
+            for (int t = words.length; t < W.length; ++t) {
+                W[t] = rotateLeft(W[t - 3] ^ W[t - 8] ^ W[t - 14] ^ W[t - 16], 1);
+            }
+
+            // Initialize working variables
+            int a = H[0];
+            int b = H[1];
+            int c = H[2];
+            int d = H[3];
+            int e = H[4];
+
+            for (int t = 0; t < W.length; ++t) {
+                int F, K;
+                if (t <= 19) {
+                    F = F0(b, c, d);
+                    K = 0x5a827999;
+                } else if (t <= 39) {
+                    F = F1(b, c, d);
+                    K = 0x6ed9eba1;
+                } else if (t <= 59) {
+                    F = F2(b, c, d);
+                    K = 0x8f1bbcdc;
+                } else {
+                    F = F1(b, c, d);
+                    K = 0xca62c1d6;
+                }
+
+                int T = rotateLeft(a, 5) + F + e + K + W[t];
+                e = d;
+                d = c;
+                c = rotateLeft(b, 30);
+                b = a;
+                a = T;
+            }
+
+            // Compute the final result
+            H[0] += a;
+            H[1] += b;
+            H[2] += c;
+            H[3] += d;
+            H[4] += e;
+        }
+
+        return splitIntoBytes(new int[] { H[0], H[1], H[2], H[3], H[4] });
     }
 
     public byte[] addPadding(byte[] message) {
@@ -58,9 +116,43 @@ public class SHA1 implements Hash {
 
         int[] words = new int[(block.length * Byte.SIZE) / WORD_SIZE_IN_BITS];
         for (int i = 0; i < words.length; ++i) {
-            words[i] = (block[4*i] << 24) | (block[4*i + 1] << 16) | (block[4*i + 2] << 8) | block[4*i + 3];
+            words[i] = ByteBuffer.wrap(new byte[] {
+                    block[4*i], block[4*i + 1], block[4*i + 2], block[4*i + 3]
+            }).getInt();
         }
 
         return words;
+    }
+
+    public byte[] splitIntoBytes(int[] words) {
+        if (words.length == 0) {
+            return new byte[0];
+        }
+
+        byte[] bytes = new byte[words.length*(WORD_SIZE_IN_BITS / Byte.SIZE)];
+        for (int i = 0; i < words.length; ++i) {
+            bytes[4*i] = (byte)(words[i] >>> 24);
+            bytes[4*i + 1] = (byte)(words[i] >>> 16);
+            bytes[4*i + 2] = (byte)(words[i] >>> 8);
+            bytes[4*i + 3] = (byte)(words[i]);
+        }
+
+        return bytes;
+    }
+
+    private int F0(int x, int y, int z) {
+        return (x & y) ^ ((~x) & z);
+    }
+
+    private int F1(int x, int y, int z) {
+        return x ^ y ^ z;
+    }
+
+    private int F2(int x, int y, int z) {
+        return (x & y) ^ (x & z) ^ (y & z);
+    }
+
+    private int rotateLeft(int word, int bits) {
+        return ((word << bits) | (word >>> (WORD_SIZE_IN_BITS - bits)));
     }
 }
