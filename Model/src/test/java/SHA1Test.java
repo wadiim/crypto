@@ -132,4 +132,29 @@ public class SHA1Test {
         assertEquals((2 * SHA1.BLOCK_SIZE_IN_BITS) & 0xFF, blocks[2][blocks[2].length - 1]);
         assertEquals((((2 * SHA1.BLOCK_SIZE_IN_BITS) & (0xFF << 8)) >> 8), blocks[2][blocks[2].length - 2]);
     }
+
+    @Test
+    void TestSplitIntoWordsIfBlockSizeIsNotMultipleOfWordSizeThenThrowsException() {
+        assertThrows(RuntimeException.class,
+                () -> hash.splitIntoWords(new byte[(SHA1.WORD_SIZE_IN_BITS / Byte.SIZE) - 1]));
+    }
+
+    @Test
+    void TestSplitIntoWordsIfBlockSizeIsEqualToWordSizeThenReturnsASingleWord() {
+        assertEquals(1, hash.splitIntoWords(new byte[SHA1.WORD_SIZE_IN_BITS / Byte.SIZE]).length);
+    }
+
+    @Test
+    void TestSplitIntoWordsIfBlockHasCorrectSizeThenReturnsCorrectNumberOfWords() {
+        assertEquals(SHA1.BLOCK_SIZE_IN_BITS / SHA1.WORD_SIZE_IN_BITS,
+                hash.splitIntoWords(new byte[SHA1.BLOCK_SIZE_IN_BITS / Byte.SIZE]).length);
+    }
+
+    @Test
+    void TestSplitIntoWordsIfBlockHasCorrectSizeThenReturnsCorrectWords() {
+        assertArrayEquals(new int[] { 0x12345678, 0x11235813, 0x0B0D1337 },
+                hash.splitIntoWords(new byte[] {
+                        0x12, 0x34, 0x56, 0x78, 0x11, 0x23, 0x58, 0x13, 0x0B, 0x0D, 0x13, 0x37
+                }));
+    }
 }

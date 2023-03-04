@@ -50,4 +50,17 @@ public class SHA1 implements Hash {
 
         return blocks;
     }
+
+    public int[] splitIntoWords(byte[] block) throws RuntimeException {
+        if (block.length % (WORD_SIZE_IN_BITS / Byte.SIZE) != 0) {
+            throw new RuntimeException("Block size is not a multiple of the word size");
+        }
+
+        int[] words = new int[(block.length * Byte.SIZE) / WORD_SIZE_IN_BITS];
+        for (int i = 0; i < words.length; ++i) {
+            words[i] = (block[4*i] << 24) | (block[4*i + 1] << 16) | (block[4*i + 2] << 8) | block[4*i + 3];
+        }
+
+        return words;
+    }
 }
