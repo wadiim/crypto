@@ -37,4 +37,17 @@ public class SHA1 implements Hash {
 
         return padded;
     }
+
+    public byte[][] splitIntoBlocks(byte[] message) throws RuntimeException {
+        if (message.length % (BLOCK_SIZE_IN_BITS / Byte.SIZE) != 0) {
+            throw new RuntimeException("Message is not padded");
+        }
+
+        byte[][] blocks = new byte[message.length / (BLOCK_SIZE_IN_BITS / Byte.SIZE)][];
+        for (int i = 0, j = 0; i < message.length; i += (BLOCK_SIZE_IN_BITS / Byte.SIZE), ++j) {
+            blocks[j] = Arrays.copyOfRange(message, i, i + (BLOCK_SIZE_IN_BITS / Byte.SIZE));
+        }
+
+        return blocks;
+    }
 }
