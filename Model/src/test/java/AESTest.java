@@ -1,47 +1,65 @@
-import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 public class AESTest {
 
-    private AES aes;
+    private final AES aes = new AES(new byte[]{0x2b, 0x7e, 0x15, 0x16, (byte) 0x28, (byte) 0xae, (byte) 0xd2, (byte) 0xa6,
+            (byte) 0xab, (byte) 0xf7, 0x15, (byte) 0x88, 0x09, (byte) 0xcf, 0x4f, 0x3c});
 
-    @BeforeEach
-    void setUp() {
-        aes = new AES();
+    @Test
+    void encryptDecryptTest() {
+        byte[] plaintext = "Hello, world!".getBytes();
+        byte[] ciphertext = aes.encrypt(plaintext);
+        byte[] decryptedText = aes.decrypt(ciphertext);
+        Assertions.assertArrayEquals(plaintext, decryptedText);
     }
 
     @Test
-    public void TestDecryptIfEmptyEncryptedMessageThenReturnsEmptyMessage() {
-        assertEquals(0, aes.decrypt(new byte[0]).length);
+    void testEncryptAndDecryptNull() {
+        byte[] plaintext = null;
+        Assertions.assertThrows(NullPointerException.class, () -> aes.encrypt(plaintext));
+        Assertions.assertThrows(NullPointerException.class, () -> aes.decrypt(plaintext));
     }
 
     @Test
-    public void TestEncryptIfEmptyEncryptedMessageThenReturnsEmptyMessage() {
-        assertEquals(0, aes.encrypt(new byte[0]).length);
+    public void testEncryptDecrypt16Bytes() {
+        byte[] key = "0123456789abcdef".getBytes();
+        AES aes = new AES(key);
+        byte[] message = "Hello, world!!!".getBytes();
+        byte[] encrypted = aes.encrypt(message);
+        byte[] decrypted = aes.decrypt(encrypted);
+        assertArrayEquals(message, decrypted);
     }
 
     @Test
-    public void TestGetKeyIfNotSetThenReturnsNull() {
-        assertNull(aes.getKey());
+    public void testEncryptDecrypt32Bytes() {
+        byte[] key = "0123456789abcdef".getBytes();
+        AES aes = new AES(key);
+        byte[] message = "The quick brown fox jumps over the lazy dog.".getBytes();
+        byte[] encrypted = aes.encrypt(message);
+        byte[] decrypted = aes.decrypt(encrypted);
+        assertArrayEquals(message, decrypted);
     }
 
     @Test
-    public void TestSetKeyIfNotNullThenTheKeyIsSet() {
-        aes.setKey(new byte[] { 0xB, 0xE, 0xE, 0xF });
-        byte[] key = aes.getKey();
-        assertEquals(4, key.length);
-        assertEquals(0xB, key[0]);
-        assertEquals(0xE, key[1]);
-        assertEquals(0xE, key[2]);
-        assertEquals(0xF, key[3]);
+    public void testEncryptDecrypt1Byte() {
+        byte[] key = "0123456789abcdef".getBytes();
+        AES aes = new AES(key);
+        byte[] message = new byte[] { 0x12 };
+        byte[] encrypted = aes.encrypt(message);
+        byte[] decrypted = aes.decrypt(encrypted);
+        assertArrayEquals(message, decrypted);
     }
 
     @Test
-    public void Test() {
-        byte[] key = new byte[] { 0xB, 0xE, 0xE, 0xF };
-        aes.setKey(key);
-        key[1] = 0xA;
-        assertEquals(0xE, aes.getKey()[1]);
+    public void testEncryptDecryptAllMaxValueBytes() {
+        byte[] key = "0123456789abcdef".getBytes();
+        AES aes = new AES(key);
+        byte[] message = new byte[] { (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF };
+        byte[] encrypted = aes.encrypt(message);
+        byte[] decrypted = aes.decrypt(encrypted);
+        assertArrayEquals(message, decrypted);
     }
 }
