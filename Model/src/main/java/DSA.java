@@ -154,25 +154,23 @@ public class DSA implements Signature {
     }
 
     public void setDomainParameters(byte[] p, byte[] q, byte[] g, long seed, int counter) {
-        if (! new BigInteger(1, p).isProbablePrime(2)) {
+        BigInteger pBig = new BigInteger(1, p);
+        BigInteger qBig = new BigInteger(1, q);
+        BigInteger gBig = new BigInteger(1, g);
+
+        if (! pBig.isProbablePrime(2)) {
             throw new RuntimeException("Invalid value of the p domain parameter - not a prime");
         }
-        if (! new BigInteger(1, p)
-                .subtract(BigInteger.ONE)
-                .mod(new BigInteger(1, q))
-                .equals(BigInteger.ZERO)) {
-
+        if (! pBig.subtract(BigInteger.ONE).mod(qBig).equals(BigInteger.ZERO)) {
             throw new RuntimeException("Invalid value of the q domain parameter - not a divisor of (p - 1)");
         }
-        if (new BigInteger(1, g).compareTo(BigInteger.ONE) <= 0
-                || new BigInteger(1, g).compareTo(new BigInteger(1, p)) >= 0) {
-
+        if (gBig.compareTo(BigInteger.ONE) <= 0 || gBig.compareTo(pBig) >= 0) {
             throw new RuntimeException("Invalid value of the g domain parameter");
         }
 
-        this.p = new BigInteger(1, p);
-        this.q = new BigInteger(1, q);
-        this.g = new BigInteger(1, g);
+        this.p = pBig;
+        this.q = qBig;
+        this.g = gBig;
         this.seed = seed;
         this.counter = counter;
     }
