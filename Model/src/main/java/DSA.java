@@ -154,6 +154,9 @@ public class DSA implements Signature {
     }
 
     public void setDomainParameters(byte[] p, byte[] q, byte[] g, long seed, int counter) {
+        if (! new BigInteger(1, p).isProbablePrime(2)) {
+            throw new RuntimeException("Invalid value of the p domain parameter - not a prime");
+        }
         if (! new BigInteger(1, p)
                 .subtract(BigInteger.ONE)
                 .mod(new BigInteger(1, q))
