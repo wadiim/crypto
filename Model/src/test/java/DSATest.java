@@ -96,6 +96,7 @@ public class DSATest {
 
     @Test
     void TestSetKeysIfValidKeysThenSetsTheKeys() {
+        dsa.setDomainParameters(p, q, g);
         dsa.setKeys(y, x);
         assertArrayEquals(y, dsa.getPublicKey());
         assertArrayEquals(x, dsa.getPrivateKey());
@@ -105,6 +106,7 @@ public class DSATest {
     void TestSetKeysIfParametersAreModifiedAfterCallThenTheKeysAreNotAltered() {
         byte[] tmpPublicKey = y.clone();
         byte[] tmpPrivateKey = x.clone();
+        dsa.setDomainParameters(p, q, g);
         dsa.setKeys(tmpPublicKey, tmpPrivateKey);
 
         tmpPublicKey[0]--;
@@ -112,6 +114,22 @@ public class DSATest {
 
         assertArrayEquals(y, dsa.getPublicKey());
         assertArrayEquals(x, dsa.getPrivateKey());
+    }
+
+    @Test
+    void TestSetKeysIfDomainParametersWereNotSetThenThrowsAnException() {
+        assertThrows(Exception.class, () -> {
+            dsa.setKeys(y, x);
+        });
+    }
+
+    @Test
+    void TestSetKeysIfKeysAreNotRelatedThenThrowsAnException() {
+        g[0] = 0x02;
+        dsa.setDomainParameters(p, q, g);
+        assertThrows(Exception.class, () -> {
+            dsa.setKeys(y, x);
+        });
     }
 
     @Test

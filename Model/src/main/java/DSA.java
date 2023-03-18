@@ -121,9 +121,16 @@ public class DSA implements Signature {
 
     @Override
     public void setKeys(byte[] publicKey, byte[] privateKey) {
-        // TODO: Add key validation
-        y = new BigInteger(1, publicKey);
-        x = new BigInteger(1, privateKey);
+        if (p == null || q == null || g == null) {
+            throw new RuntimeException("Failed to set keys - The domain parameters are not set");
+        }
+        BigInteger yBig = new BigInteger(1, publicKey);
+        BigInteger xBig = new BigInteger(1, privateKey);
+        if (! yBig.equals(g.modPow(xBig, p))) {
+            throw new RuntimeException("Failed to set keys - The keys are not related");
+        }
+        y = yBig;
+        x = xBig;
     }
 
     /**
