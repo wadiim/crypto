@@ -15,6 +15,8 @@ public class DSATest {
     private final int L = 1024;
     private final int N = 160;
 
+    private byte[] message;
+
     @BeforeEach
     void setUp() {
         dsa = new DSA(new SHA1());
@@ -81,6 +83,11 @@ public class DSATest {
                 (byte) 0xd6, (byte) 0xfa, (byte) 0x02, (byte) 0x09, (byte) 0xed, (byte) 0x55, (byte) 0xdb, (byte) 0x0f,
                 (byte) 0x0a, (byte) 0x4c, (byte) 0x80, (byte) 0x27, (byte) 0xb8, (byte) 0x69, (byte) 0xf7, (byte) 0xf5,
                 (byte) 0x0b, (byte) 0xaa, (byte) 0x32, (byte) 0x68, (byte) 0x9b, (byte) 0x91, (byte) 0x17, (byte) 0x78
+        };
+        message = new byte[] {
+                (byte) 0x46, (byte) 0x75, (byte) 0x63, (byte) 0x6b, (byte) 0x20, (byte) 0x4d, (byte) 0x61, (byte) 0x74,
+                (byte) 0x65, (byte) 0x75, (byte) 0x73, (byte) 0x7a, (byte) 0x47, (byte) 0x32, (byte) 0x30, (byte) 0x30,
+                (byte) 0x31
         };
     }
 
@@ -280,5 +287,92 @@ public class DSATest {
         BigInteger pBig = new BigInteger(1, dsa.getP());
         BigInteger gBig = new BigInteger(1, dsa.getG());
         assertEquals(0, yBig.compareTo(gBig.modPow(xBig, pBig)));
+    }
+
+    @Test
+    void TestSignIfDomainParametersAreNotSetThenThrowsException() {
+        assertThrows(Exception.class, () -> {
+            dsa.sign(new byte[] { 0x00, 0x01, 0x02 });
+        });
+    }
+
+    @Test
+    void TestSignIfKeysAreNotSetThenThrowsException() {
+        dsa.setDomainParameters(p, q, g);
+        assertThrows(Exception.class, () -> {
+            dsa.sign(new byte[] { 0x00, 0x01, 0x02 });
+        });
+    }
+
+    @Test
+    void TestSignIfCalledProperlyThenReturnsValidValues() {
+        dsa.setDomainParameters(p, q, g);
+        dsa.setKeys(y, x);
+        byte[][] sign = dsa.sign(new byte[] { 0x00, 0x01, 0x02 });
+        assertNotEquals(new byte[] { 0x00 }, sign[0]);
+        assertNotEquals(new byte[] { 0x00 }, sign[1]);
+    }
+
+    @Test
+    void TestVerifyIfDomainsParametersAreNotSetThenThrowsException() {
+        DSA tmp = new DSA(new SHA1());
+        tmp.setDomainParameters(p, q, g);
+        tmp.setKeys(y, x);
+        byte[][] sign = tmp.sign(message);
+
+        assertThrows(Exception.class, () -> {
+            dsa.verify(message, sign);
+        });
+    }
+
+    @Test
+    void TestVerifyIfPublicKeyIsNotSetThenThrowsException() {
+        DSA tmp = new DSA(new SHA1());
+        tmp.setDomainParameters(p, q, g);
+        tmp.setKeys(y, x);
+        byte[][] sign = tmp.sign(message);
+
+        dsa.setDomainParameters(p, q, g);
+        assertThrows(Exception.class, () -> {
+            dsa.verify(message, sign);
+        });
+    }
+
+    @Test
+    void TestVerifyIfRIsGreaterThanQThenReturnsFalse() {
+        dsa.setDomainParameters(p, q, g);
+        dsa.setKeys(y, x);
+        byte[][] sign = dsa.sign(message);
+
+        assertFalse(dsa.verify(message, new byte[][] {
+                new BigInteger(q).add(BigInteger.ONE).toByteArray(),
+                sign[1]
+        }));
+    }
+
+    @Test
+    void TestVerifyIfSIsGreaterThanQThenReturnsFalse() {
+        dsa.setDomainParameters(p, q, g);
+        dsa.setKeys(y, x);
+        byte[][] sign = dsa.sign(message);
+
+        assertFalse(dsa.verify(message, new byte[][] {
+                sign[0],
+                new BigInteger(q).add(BigInteger.ONE).toByteArray()
+        }));
+    }
+
+    @Test
+    void TestVerifyIfValidSignatureThenReturnsTrue() {
+        dsa.setDomainParameters(p, q, g);
+        dsa.setKeys(y, x);
+        assertTrue(dsa.verify(message, dsa.sign(message)));
+    }
+
+    @Test
+    void TestVerifyIfInvalidSignatureThenReturnsFalse() {
+        dsa.setDomainParameters(p, q, g);
+        dsa.setKeys(y, x);
+        assertFalse(dsa.verify(message, dsa.sign(new byte[] { 0x02, 0x13, 0x37 })));
     }
 }

@@ -144,16 +144,48 @@ public class DSA implements Signature {
      * @see "Section 4.6 of DSS"
      */
     @Override
-    public byte[] sign(byte[] message) {
-        return new byte[0];
+    public byte[][] sign(byte[] message) {
+        if (p == null || q == null || g == null) {
+            throw new RuntimeException("Failed to sign - The domain parameters are not set");
+        }
+        if (x == null || y == null) {
+            throw new RuntimeException("Failed to sign - The keys are not set");
+        }
+
+        generateSecretNumber();
+        BigInteger kInverse = k.modInverse(q);
+        BigInteger r = g.modPow(k, p).mod(q);
+        BigInteger z = new BigInteger(1, hash.getDigest(message));
+        BigInteger s = kInverse.multiply(z.add(x.multiply(r))).mod(q);
+
+        return new byte[][] { r.toByteArray(), s.toByteArray() };
     }
 
     /**
      * @see "Section 4.7 of DSS"
      */
     @Override
-    public boolean verify(byte[] message, byte[] sign) {
-        return false;
+    public boolean verify(byte[] message, byte[][] sign) {
+        if (p == null || q == null || g == null) {
+            throw new RuntimeException("Failed to verify - the domain parameters are not set");
+        }
+        if (y == null) {
+            throw new RuntimeException("Failed to verify - the public key is not set");
+        }
+
+        BigInteger r = new BigInteger(1, sign[0]);
+        BigInteger s = new BigInteger(1, sign[1]);
+        if (r.compareTo(q) >= 0 || s.compareTo(q) >= 0) {
+            return false;
+        }
+
+        BigInteger w = s.modInverse(q);
+        BigInteger z = new BigInteger(1, hash.getDigest(message));
+        BigInteger u1 = z.multiply(w).mod(q);
+        BigInteger u2 = r.multiply(w).mod(q);
+        BigInteger v = g.modPow(u1, p).multiply(y.modPow(u2, p)).mod(p).mod(q);
+
+        return v.equals(r);
     }
 
     public void setDomainParameters(byte[] p, byte[] q, byte[] g) {
@@ -214,5 +246,16 @@ public class DSA implements Signature {
             bytes = tmp;
         }
         return bytes;
+    }
+
+    /**
+     * @see "Section B.2.2 of DSS"
+     */
+    private void generateSecretNumber() {
+        BigInteger c;
+        do {
+            c = new BigInteger(N, new Random());
+        } while (c.compareTo(q.subtract(BigInteger.TWO)) > 0);
+        k = c.add(BigInteger.ONE);
     }
 }

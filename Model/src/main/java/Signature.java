@@ -4,6 +4,6 @@ public interface Signature {
     byte[] getPrivateKey();
     void setKeys(byte[] publicKey, byte[] privateKey);
 
-    byte[] sign(byte[] message);
-    boolean verify(byte[] message, byte[] sign);
+    byte[][] sign(byte[] message);
+    boolean verify(byte[] message, byte[][] sign);
 }
