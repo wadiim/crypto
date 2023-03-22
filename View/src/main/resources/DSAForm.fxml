@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="dsaForm" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.DSAController">
+
+    <MenuBar id="menuBar" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="600.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+        <Menu id="menu" mnemonicParsing="false" text="Tools">
+            <MenuItem id="aes" mnemonicParsing="false" onAction="#loadAESForm" text="AES" />
+            <MenuItem id="dsa" mnemonicParsing="false" text="DSA" />
+        </Menu>
+    </MenuBar>
+   <GridPane alignment="TOP_CENTER" layoutY="26.0" prefHeight="574.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="26.0">
+       <Label alignment="TOP_CENTER" contentDisplay="TOP" prefHeight="30.0" prefWidth="600.0" text="DSA" textAlignment="CENTER">
+           <font>
+               <Font size="24.0" />
+           </font>
+       </Label>
+      <TitledPane collapsible="false" prefHeight="245.0" prefWidth="600.0" text="Keys / Parameters" GridPane.rowIndex="1">
+         <content>
+            <VBox prefHeight="237.0" prefWidth="598.0">
+               <children>
+                  <HBox prefHeight="18.0" prefWidth="579.0">
+                     <children>
+                        <Label prefHeight="22.0" prefWidth="12.0" text="x">
+                           <HBox.margin>
+                              <Insets right="10.0" />
+                           </HBox.margin>
+                        </Label>
+                        <TextField prefHeight="23.0" prefWidth="561.0" />
+                     </children>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <padding>
+                        <Insets bottom="10.0" />
+                     </padding>
+                  </HBox>
+                  <HBox prefHeight="18.0" prefWidth="579.0">
+                     <children>
+                        <Label prefHeight="22.0" prefWidth="12.0" text="y">
+                           <HBox.margin>
+                              <Insets right="10.0" />
+                           </HBox.margin>
+                        </Label>
+                        <TextField prefHeight="23.0" prefWidth="561.0" />
+                     </children>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <padding>
+                        <Insets bottom="10.0" />
+                     </padding>
+                  </HBox>
+                  <HBox prefHeight="18.0" prefWidth="579.0">
+                     <children>
+                        <Label prefHeight="22.0" prefWidth="12.0" text="p">
+                           <HBox.margin>
+                              <Insets right="10.0" />
+                           </HBox.margin>
+                        </Label>
+                        <TextField prefHeight="23.0" prefWidth="561.0" />
+                     </children>
+                     <padding>
+                        <Insets bottom="10.0" />
+                     </padding>
+                  </HBox>
+                  <HBox prefHeight="18.0" prefWidth="579.0">
+                     <children>
+                        <Label prefHeight="22.0" prefWidth="12.0" text="q">
+                           <HBox.margin>
+                              <Insets right="10.0" />
+                           </HBox.margin>
+                        </Label>
+                        <TextField prefHeight="23.0" prefWidth="561.0" />
+                     </children>
+                     <padding>
+                        <Insets bottom="10.0" />
+                     </padding>
+                  </HBox>
+                  <HBox prefHeight="18.0" prefWidth="579.0">
+                     <children>
+                        <Label prefHeight="22.0" prefWidth="12.0" text="g">
+                           <HBox.margin>
+                              <Insets right="10.0" />
+                           </HBox.margin>
+                        </Label>
+                        <TextField prefHeight="23.0" prefWidth="561.0" />
+                     </children>
+                     <padding>
+                        <Insets bottom="10.0" />
+                     </padding>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="30.0" prefWidth="579.0">
+                     <children>
+                        <Button mnemonicParsing="false" text="Generate">
+                           <HBox.margin>
+                              <Insets right="10.0" />
+                           </HBox.margin>
+                        </Button>
+                        <Button mnemonicParsing="false" text="Load">
+                           <HBox.margin>
+                              <Insets right="10.0" />
+                           </HBox.margin>
+                        </Button>
+                        <Button mnemonicParsing="false" text="Save" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </content></TitledPane>
+      <TitledPane collapsible="false" prefHeight="300.0" prefWidth="600.0" text="Sign / Verify" GridPane.rowIndex="2">
+         <content>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <VBox prefHeight="255.0" prefWidth="200.0">
+                     <children>
+                        <HBox alignment="TOP_CENTER" prefHeight="34.0" prefWidth="196.0">
+                           <children>
+                              <Button mnemonicParsing="false" text="Load">
+                                 <HBox.margin>
+                                    <Insets right="10.0" />
+                                 </HBox.margin>
+                              </Button>
+                              <Button mnemonicParsing="false" text="Save" />
+                           </children>
+                        </HBox>
+                        <TextArea prefHeight="222.0" prefWidth="196.0" wrapText="true" />
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" prefHeight="255.0" prefWidth="192.0">
+                     <children>
+                        <Button mnemonicParsing="false" text="Sign →">
+                           <VBox.margin>
+                              <Insets bottom="10.0" />
+                           </VBox.margin>
+                        </Button>
+                        <Button mnemonicParsing="false" text="← Verify" />
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="255.0" prefWidth="200.0">
+                     <children>
+                        <VBox prefHeight="256.0" prefWidth="196.0">
+                           <children>
+                              <HBox alignment="TOP_CENTER" prefHeight="34.0" prefWidth="196.0">
+                                 <children>
+                                    <Button mnemonicParsing="false" text="Load">
+                                       <HBox.margin>
+                                          <Insets right="10.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                    <Button mnemonicParsing="false" text="Save" />
+                                 </children>
+                              </HBox>
+                              <TextArea prefHeight="221.0" prefWidth="196.0" wrapText="true" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+         </content></TitledPane>
+
+     <columnConstraints>
+       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+     </columnConstraints>
+     <rowConstraints>
+       <RowConstraints maxHeight="274.59999694824216" minHeight="0.0" prefHeight="30.99999084472656" vgrow="SOMETIMES" />
+       <RowConstraints maxHeight="503.2" minHeight="10.0" prefHeight="246.40000610351564" vgrow="SOMETIMES" />
+       <RowConstraints maxHeight="337.8000244140625" minHeight="10.0" prefHeight="297.5999938964844" vgrow="SOMETIMES" />
+     </rowConstraints>
+   </GridPane>
+</AnchorPane>

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.AESController" fx:id="aesForm">
+
+    <MenuBar id="menuBar" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="600.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+        <Menu id="menu" mnemonicParsing="false" text="Tools">
+            <MenuItem id="aes" mnemonicParsing="false" text="AES" />
+            <MenuItem id="dsa" mnemonicParsing="false" text="DSA" onAction="#loadDSAForm"/>
+        </Menu>
+    </MenuBar>
+
+    <GridPane alignment="TOP_CENTER" layoutY="26.0" prefHeight="575.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="26.0" BorderPane.alignment="CENTER">
+        <Label alignment="TOP_CENTER" contentDisplay="TOP" prefHeight="30.0" prefWidth="600.0" text="AES" textAlignment="CENTER" GridPane.rowIndex="1">
+            <font>
+                <Font size="24.0" />
+            </font>
+        </Label>
+        <TitledPane collapsible="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="58.0" prefWidth="600.0" text="Key" GridPane.rowIndex="2">
+            <content>
+                <HBox prefHeight="100.0" prefWidth="200.0">
+                    <children>
+                        <TextField prefHeight="23.0" prefWidth="384.0" />
+                        <Button mnemonicParsing="false" text="Generate">
+                            <HBox.margin>
+                                <Insets left="10.0" />
+                            </HBox.margin>
+                        </Button>
+                        <Button mnemonicParsing="false" text="Load">
+                            <opaqueInsets>
+                                <Insets />
+                            </opaqueInsets>
+                            <HBox.margin>
+                                <Insets left="10.0" />
+                            </HBox.margin>
+                        </Button>
+                        <Button mnemonicParsing="false" text="Save">
+                            <opaqueInsets>
+                                <Insets />
+                            </opaqueInsets>
+                            <HBox.margin>
+                                <Insets left="10.0" />
+                            </HBox.margin>
+                        </Button>
+                    </children>
+                </HBox>
+            </content>
+        </TitledPane>
+        <TitledPane collapsible="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="480.0" prefWidth="600.0" text="Encryption / Decryption" GridPane.rowIndex="3">
+         <content>
+            <HBox prefHeight="247.0" prefWidth="598.0">
+               <children>
+                  <VBox prefHeight="433.0" prefWidth="230.0">
+                     <children>
+                        <HBox alignment="TOP_CENTER" prefHeight="34.0" prefWidth="193.0">
+                           <children>
+                              <Button mnemonicParsing="false" text="Load" />
+                              <Button mnemonicParsing="false" text="Save">
+                                 <HBox.margin>
+                                    <Insets left="10.0" />
+                                 </HBox.margin>
+                              </Button>
+                           </children>
+                        </HBox>
+                        <TextArea prefHeight="400.0" prefWidth="200.0" wrapText="true" />
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" prefHeight="433.0" prefWidth="193.0">
+                     <children>
+                        <Button mnemonicParsing="false" text="Encrypt →" />
+                        <Button mnemonicParsing="false" text="← Decrypt">
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin>
+                        </Button>
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="433.0" prefWidth="230.0">
+                     <children>
+                        <HBox alignment="TOP_CENTER" prefHeight="34.0" prefWidth="193.0">
+                           <children>
+                              <Button mnemonicParsing="false" text="Load" />
+                              <Button mnemonicParsing="false" text="Save">
+                                 <HBox.margin>
+                                    <Insets left="10.0" />
+                                 </HBox.margin>
+                              </Button>
+                           </children>
+                        </HBox>
+                        <TextArea prefHeight="400.0" prefWidth="200.0" wrapText="true" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+         </content></TitledPane>
+        <columnConstraints>
+            <ColumnConstraints />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+        </rowConstraints>
+    </GridPane>
+</AnchorPane>
