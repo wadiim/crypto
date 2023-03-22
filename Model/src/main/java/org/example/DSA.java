@@ -1,9 +1,11 @@
+package org.example;
+
 import java.math.BigInteger;
 import java.lang.Math;
 import java.util.Random;
 
 /**
- * @see <a href="https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.186-4.pdf">Digital Signature Standard</a>
+ * @see <a href="https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.186-4.pdf">Digital org.example.Signature Standard</a>
  */
 public class DSA implements Signature {
 
@@ -31,7 +33,7 @@ public class DSA implements Signature {
 
     private long seed;      // Seed used for generation of domain parameters
     private int counter;    // The counter value that results from the domain parameter generation process when the
-                            // domain parameter seed is used to generate DSA domain parameters.
+                            // domain parameter seed is used to generate org.example.DSA domain parameters.
 
     private BigInteger d;   // Private signature exponent of a private key
     private BigInteger k;   // Per-message secret number. Shall be generated prior to the generation of each digital

@@ -1,3 +1,5 @@
+package org.example;
+
 public interface Signature {
     void generateKeys();
     byte[] getPublicKey();

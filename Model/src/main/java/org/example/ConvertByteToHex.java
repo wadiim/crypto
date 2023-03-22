@@ -1,3 +1,5 @@
+package org.example;
+
 public class ConvertByteToHex {
 
     private static final char[] HEX_ARRAY = "0123456789ABCDEF".toCharArray();

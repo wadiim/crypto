@@ -1,3 +1,5 @@
+package org.example;
+
 public class AES implements Cipher {
 
     public byte[] key;
@@ -100,7 +102,7 @@ public class AES implements Cipher {
     }
 
     /*
-        Transformation in the Cipher that takes all of the columns
+        Transformation in the org.example.Cipher that takes all of the columns
         of the State and mixes their data (independently of one another)
         to produce new columns.
     */
@@ -155,7 +157,7 @@ public class AES implements Cipher {
     }
 
     /*
-        Transformation in the Inverse Cipher that is the inverse of MixColumns().
+        Transformation in the Inverse org.example.Cipher that is the inverse of MixColumns().
      */
     public byte[] invMixColumns(byte[] dataBlock) {
         byte[][] matrix = new byte[4][4];
@@ -196,7 +198,7 @@ public class AES implements Cipher {
     }
 
     /*
-        Transformation in the Cipher that processes the State by cyclically
+        Transformation in the org.example.Cipher that processes the State by cyclically
         shifting the last three rows of the State by different offsets.
      */
     public byte[] shiftRows(byte dataBlock[]) {
@@ -213,7 +215,7 @@ public class AES implements Cipher {
     }
 
     /*
-        Transformation in the Inverse Cipher that is the inverse of shiftRows().
+        Transformation in the Inverse org.example.Cipher that is the inverse of shiftRows().
      */
     public byte[] invShiftRows(byte[] dataBlock) {
 
@@ -229,7 +231,7 @@ public class AES implements Cipher {
     }
 
     /*
-        Transformation in the Cipher that processes the State using a nonlinear byte
+        Transformation in the org.example.Cipher that processes the State using a nonlinear byte
         substitution table (S-box) that operates on each of the State bytes independently.
      */
     private byte[] subBytes(byte[] dataBlock) {
@@ -241,7 +243,7 @@ public class AES implements Cipher {
     }
 
     /*
-        Transformation in the Inverse Cipher that is the inverse of SubBytes()
+        Transformation in the Inverse org.example.Cipher that is the inverse of SubBytes()
      */
     public byte[] invSubBytes(byte[] dataBlock) {
         byte[] clearText = new byte[16];
@@ -252,7 +254,7 @@ public class AES implements Cipher {
     }
 
     /*
-         Transformation in the Cipher and Inverse Cipher in which a Round
+         Transformation in the org.example.Cipher and Inverse org.example.Cipher in which a Round
          Key is added to the State using an XOR operation.
      */
     public byte[] addRoundKey(byte[] dataBlock, int runda) {

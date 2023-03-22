@@ -1,3 +1,4 @@
+import org.example.SHA1;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -202,8 +203,8 @@ public class SHA1Test {
 
     @Test
     void TestGetDigestIfNonEmptyMessageThenReturnsCorrectDigest() throws NoSuchAlgorithmException {
-        assertArrayEquals(MessageDigest.getInstance("SHA-1").digest("Hash me".getBytes()),
-                hash.getDigest("Hash me".getBytes())
+        assertArrayEquals(MessageDigest.getInstance("SHA-1").digest("org.example.Hash me".getBytes()),
+                hash.getDigest("org.example.Hash me".getBytes())
         );
     }
 }

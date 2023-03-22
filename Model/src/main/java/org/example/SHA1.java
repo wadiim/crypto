@@ -1,9 +1,11 @@
+package org.example;
+
 import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 
 /**
- * @see <a href="https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.180-4.pdf">Secure Hash Standard</a>
+ * @see <a href="https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.180-4.pdf">Secure org.example.Hash Standard</a>
  */
 public class SHA1 implements Hash {
     public static final int WORD_SIZE_IN_BITS = 32;
