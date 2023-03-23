@@ -98,4 +98,14 @@ public class AESTest {
             assertEquals("Failed to decrypt - No key provided", e.getMessage());
         }
     }
+
+    @Test
+    public void testGenerateKeyIfThenEncryptDecryptWorks() {
+        AES aes = new AES();
+        aes.generateKey();
+        byte[] plaintext = "Hello, world!".getBytes();
+        byte[] ciphertext = aes.encrypt(plaintext);
+        byte[] decryptedText = aes.decrypt(ciphertext);
+        Assertions.assertArrayEquals(plaintext, decryptedText);
+    }
 }

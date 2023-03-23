@@ -1,5 +1,8 @@
 package org.example;
 
+import java.math.BigInteger;
+import java.util.Random;
+
 public class AES implements Cipher {
 
     public byte[] key;
@@ -16,6 +19,10 @@ public class AES implements Cipher {
     }
     public void expandKey() {
         this.roundKeys = extendKey(this.key);
+    }
+    public void generateKey() {
+        BigInteger keyBig = new BigInteger(128, new Random());
+        setKey(keyBig.toByteArray());
     }
 
     @Override
