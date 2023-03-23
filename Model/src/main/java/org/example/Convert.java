@@ -11,6 +11,13 @@ public class Convert {
      * @return byte array
      */
     public static byte[] convertHexStringToByteArray(String hexString) {
+        if (! hexString.matches("[0123456789ABCDEF]*")) {
+            throw new RuntimeException("Failed to convert string to hex - invalid characters");
+        }
+        if (hexString.length() % 2 != 0) {
+            throw new RuntimeException("Failed to convert string to hex - invalid number of characters");
+        }
+
         int stringLength = hexString.length();
         byte[] byteArray = new byte[stringLength / 2];
         for (int i = 0; i < stringLength; i += 2) {

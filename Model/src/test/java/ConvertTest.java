@@ -42,4 +42,33 @@ public class ConvertTest {
         // Then
         Assertions.assertEquals(hexString, actualHexString);
     }
+
+    @Test
+    void testConvertHexStringToByteArrayIfInvalidRepresentationOfHexThenThrowsException() {
+        Assertions.assertThrows(Exception.class, () -> Convert.convertHexStringToByteArray("Oh nyo~!"));
+    }
+
+    @Test
+    void testConvertHexStringToByteArrayIfInvalidRepresentationOfHexThenTheExceptionHasCorrectMessage() {
+        try {
+            Convert.convertHexStringToByteArray("Oh nyo~!");
+        } catch (Exception e) {
+            Assertions.assertEquals("Failed to convert string to hex - invalid characters", e.getMessage());
+        }
+    }
+
+    @Test
+    void testConvertHexStringToByteArrayIfInvalidNumberOfCharactersThenThrowsException() {
+        Assertions.assertThrows(Exception.class, () -> Convert.convertHexStringToByteArray("FFF"));
+    }
+
+    @Test
+    void testConvertHexStringToByteArrayIfInvalidNumberOfCharactersThenExceptionHasCorrectMessage() {
+        try {
+            Convert.convertHexStringToByteArray("FFF");
+        } catch (Exception e) {
+            Assertions.assertEquals("Failed to convert string to hex - invalid number of characters",
+                    e.getMessage());
+        }
+    }
 }
