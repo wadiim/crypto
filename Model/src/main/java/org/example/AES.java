@@ -4,7 +4,13 @@ public class AES implements Cipher {
 
     public byte[] key;
     public byte[][] roundKeys;
+
+    public AES() {
+    }
     public AES(byte[] key) {
+        setKey(key);
+    }
+    public void setKey(byte[] key) {
         this.key = key;
         expandKey();
     }
@@ -14,6 +20,10 @@ public class AES implements Cipher {
 
     @Override
     public byte[] decrypt(byte[] message) {
+        if (this.key == null) {
+            throw new RuntimeException("Failed to decrypt - No key provided");
+        }
+
         byte[] message2 = new byte[message.length];
         System.arraycopy(message,0, message2,0,message.length);
 
@@ -44,6 +54,10 @@ public class AES implements Cipher {
 
     @Override
     public byte[] encrypt(byte[] message) {
+        if (this.key == null) {
+            throw new RuntimeException("Failed to encrypt - No key provided");
+        }
+
         int howManyCharacters = (message.length + 15) / 16 * 16;
 
         byte[] clearText2 = new byte[howManyCharacters];

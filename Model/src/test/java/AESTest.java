@@ -1,8 +1,7 @@
 import org.example.AES;
 import org.junit.jupiter.api.Assertions;
+import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 public class AESTest {
 
@@ -62,5 +61,41 @@ public class AESTest {
         byte[] encrypted = aes.encrypt(message);
         byte[] decrypted = aes.decrypt(encrypted);
         assertArrayEquals(message, decrypted);
+    }
+
+    @Test
+    public void testEncryptIfNoKeyThenThrowsAnException() {
+        AES aes = new AES();
+        assertThrows(Exception.class, () -> {
+            aes.encrypt(new byte[] { (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF });
+        });
+    }
+
+    @Test
+    public void testEncryptIfNoKeyThenTheExceptionHasCorrectMessage() {
+        AES aes = new AES();
+        try {
+            aes.encrypt(new byte[] { (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF });
+        } catch (Exception e) {
+            assertEquals("Failed to encrypt - No key provided", e.getMessage());
+        }
+    }
+
+    @Test
+    public void testDecryptIfNoKeyThenThrowsAnException() {
+        AES aes = new AES();
+        assertThrows(Exception.class, () -> {
+            aes.decrypt(new byte[] { (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF });
+        });
+    }
+
+    @Test
+    public void testDecryptIfNoKeyThenTheExceptionHasCorrectMessage() {
+        AES aes = new AES();
+        try {
+            aes.decrypt(new byte[] { (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF });
+        } catch (Exception e) {
+            assertEquals("Failed to decrypt - No key provided", e.getMessage());
+        }
     }
 }
