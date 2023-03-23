@@ -1,8 +1,8 @@
-import org.example.ConvertByteToHex;
+import org.example.Convert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class ConvertByteToHexTest {
+public class ConvertTest {
 
     @Test
     void testConvertHexStringToByteArray() {
@@ -11,7 +11,7 @@ public class ConvertByteToHexTest {
         byte[] expectedByteArray = {72, 101, 108, 108, 111, 32, 87, 111, 114, 108, 100};
 
         // When
-        byte[] actualByteArray = ConvertByteToHex.convertHexStringToByteArray(hexString);
+        byte[] actualByteArray = Convert.convertHexStringToByteArray(hexString);
 
         // Then
         Assertions.assertArrayEquals(expectedByteArray, actualByteArray);
@@ -24,7 +24,7 @@ public class ConvertByteToHexTest {
         String expectedHexString = "48656C6C6F20576F726C64";
 
         // When
-        String actualHexString = ConvertByteToHex.convertByteArrayToHexString(byteArray);
+        String actualHexString = Convert.convertByteArrayToHexString(byteArray);
 
         // Then
         Assertions.assertEquals(expectedHexString, actualHexString);
@@ -36,8 +36,8 @@ public class ConvertByteToHexTest {
         String hexString = "0123456789ABCDEF";
 
         // When
-        byte[] byteArray = ConvertByteToHex.convertHexStringToByteArray(hexString);
-        String actualHexString = ConvertByteToHex.convertByteArrayToHexString(byteArray);
+        byte[] byteArray = Convert.convertHexStringToByteArray(hexString);
+        String actualHexString = Convert.convertByteArrayToHexString(byteArray);
 
         // Then
         Assertions.assertEquals(hexString, actualHexString);

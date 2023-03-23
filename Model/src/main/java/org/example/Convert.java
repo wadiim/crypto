@@ -1,6 +1,6 @@
 package org.example;
 
-public class ConvertByteToHex {
+public class Convert {
 
     private static final char[] HEX_ARRAY = "0123456789ABCDEF".toCharArray();
 
