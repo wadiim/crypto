@@ -154,7 +154,9 @@ public class DSA implements Signature {
             throw new RuntimeException("Failed to sign - The keys are not set");
         }
 
-        generateSecretNumber();
+        do {
+            generateSecretNumber();
+        } while (! k.gcd(q).equals(BigInteger.ONE));
         BigInteger kInverse = k.modInverse(q);
         BigInteger r = g.modPow(k, p).mod(q);
         BigInteger z = new BigInteger(1, hash.getDigest(message));
