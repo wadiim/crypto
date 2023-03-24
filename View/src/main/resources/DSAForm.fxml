@@ -1,23 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.TitledPane?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="dsaForm" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.DSAController">
+<AnchorPane fx:id="dsaForm" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.DSAController">
 
     <MenuBar id="menuBar" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="600.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
         <Menu id="menu" mnemonicParsing="false" text="Tools">
@@ -42,7 +30,7 @@
                               <Insets right="10.0" />
                            </HBox.margin>
                         </Label>
-                        <TextField prefHeight="23.0" prefWidth="561.0" />
+                        <TextField fx:id="privateKeyField" prefHeight="23.0" prefWidth="561.0" />
                      </children>
                      <opaqueInsets>
                         <Insets />
@@ -58,7 +46,7 @@
                               <Insets right="10.0" />
                            </HBox.margin>
                         </Label>
-                        <TextField prefHeight="23.0" prefWidth="561.0" />
+                        <TextField fx:id="publicKeyField" prefHeight="23.0" prefWidth="561.0" />
                      </children>
                      <opaqueInsets>
                         <Insets />
@@ -74,7 +62,7 @@
                               <Insets right="10.0" />
                            </HBox.margin>
                         </Label>
-                        <TextField prefHeight="23.0" prefWidth="561.0" />
+                        <TextField fx:id="pField" prefHeight="23.0" prefWidth="561.0" />
                      </children>
                      <padding>
                         <Insets bottom="10.0" />
@@ -87,7 +75,7 @@
                               <Insets right="10.0" />
                            </HBox.margin>
                         </Label>
-                        <TextField prefHeight="23.0" prefWidth="561.0" />
+                        <TextField fx:id="qField" prefHeight="23.0" prefWidth="561.0" />
                      </children>
                      <padding>
                         <Insets bottom="10.0" />
@@ -100,7 +88,7 @@
                               <Insets right="10.0" />
                            </HBox.margin>
                         </Label>
-                        <TextField prefHeight="23.0" prefWidth="561.0" />
+                        <TextField fx:id="gField" prefHeight="23.0" prefWidth="561.0" />
                      </children>
                      <padding>
                         <Insets bottom="10.0" />
@@ -108,7 +96,7 @@
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="30.0" prefWidth="579.0">
                      <children>
-                        <Button mnemonicParsing="false" text="Generate">
+                        <Button fx:id="generateButton" mnemonicParsing="false" onAction="#generateKeys" text="Generate">
                            <HBox.margin>
                               <Insets right="10.0" />
                            </HBox.margin>
@@ -140,17 +128,17 @@
                               <Button mnemonicParsing="false" text="Save" />
                            </children>
                         </HBox>
-                        <TextArea prefHeight="222.0" prefWidth="196.0" wrapText="true" />
+                        <TextArea fx:id="messageField" prefHeight="222.0" prefWidth="196.0" wrapText="true" />
                      </children>
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="255.0" prefWidth="192.0">
                      <children>
-                        <Button mnemonicParsing="false" text="Sign →">
+                        <Button fx:id="signButton" mnemonicParsing="false" onAction="#sign" text="Sign →">
                            <VBox.margin>
                               <Insets bottom="10.0" />
                            </VBox.margin>
                         </Button>
-                        <Button mnemonicParsing="false" text="← Verify" />
+                        <Button fx:id="verifyButton" mnemonicParsing="false" text="← Verify" onAction="#verify"/>
                      </children>
                   </VBox>
                   <VBox prefHeight="255.0" prefWidth="200.0">
@@ -167,7 +155,7 @@
                                     <Button mnemonicParsing="false" text="Save" />
                                  </children>
                               </HBox>
-                              <TextArea prefHeight="221.0" prefWidth="196.0" wrapText="true" />
+                              <TextArea fx:id="signatureField" prefHeight="221.0" prefWidth="196.0" wrapText="true" />
                            </children>
                         </VBox>
                      </children>

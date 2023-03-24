@@ -1,29 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.TitledPane?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.AESController" fx:id="aesForm">
+<AnchorPane fx:id="aesForm" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.AESController">
 
     <MenuBar id="menuBar" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="600.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
         <Menu id="menu" mnemonicParsing="false" text="Tools">
             <MenuItem id="aes" mnemonicParsing="false" text="AES" />
-            <MenuItem id="dsa" mnemonicParsing="false" text="DSA" onAction="#loadDSAForm"/>
+            <MenuItem id="dsa" mnemonicParsing="false" onAction="#loadDSAForm" text="DSA" />
         </Menu>
     </MenuBar>
 
@@ -37,13 +24,13 @@
             <content>
                 <HBox prefHeight="100.0" prefWidth="200.0">
                     <children>
-                        <TextField prefHeight="23.0" prefWidth="384.0" />
-                        <Button mnemonicParsing="false" text="Generate">
+                        <TextField fx:id="keyField" prefHeight="23.0" prefWidth="384.0" />
+                        <Button mnemonicParsing="false" onAction="#generateKey" text="Generate">
                             <HBox.margin>
                                 <Insets left="10.0" />
                             </HBox.margin>
                         </Button>
-                        <Button mnemonicParsing="false" text="Load">
+                        <Button mnemonicParsing="false" text="Load" onAction="#loadKeyFromFile">
                             <opaqueInsets>
                                 <Insets />
                             </opaqueInsets>
@@ -51,7 +38,7 @@
                                 <Insets left="10.0" />
                             </HBox.margin>
                         </Button>
-                        <Button mnemonicParsing="false" text="Save">
+                        <Button mnemonicParsing="false" text="Save" onAction="#saveKeyToFile">
                             <opaqueInsets>
                                 <Insets />
                             </opaqueInsets>
@@ -71,21 +58,21 @@
                      <children>
                         <HBox alignment="TOP_CENTER" prefHeight="34.0" prefWidth="193.0">
                            <children>
-                              <Button mnemonicParsing="false" text="Load" />
-                              <Button mnemonicParsing="false" text="Save">
+                              <Button mnemonicParsing="false" text="Load" onAction="#loadMessageFromFile"/>
+                              <Button mnemonicParsing="false" text="Save" onAction="#saveMessageToFile">
                                  <HBox.margin>
                                     <Insets left="10.0" />
                                  </HBox.margin>
                               </Button>
                            </children>
                         </HBox>
-                        <TextArea prefHeight="400.0" prefWidth="200.0" wrapText="true" />
+                        <TextArea fx:id="plainTextField" prefHeight="400.0" prefWidth="200.0" wrapText="true" />
                      </children>
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="433.0" prefWidth="193.0">
                      <children>
-                        <Button mnemonicParsing="false" text="Encrypt →" />
-                        <Button mnemonicParsing="false" text="← Decrypt">
+                        <Button mnemonicParsing="false" onAction="#encrypt" text="Encrypt →" />
+                        <Button mnemonicParsing="false" onAction="#decrypt" text="← Decrypt">
                            <VBox.margin>
                               <Insets top="10.0" />
                            </VBox.margin>
@@ -96,15 +83,15 @@
                      <children>
                         <HBox alignment="TOP_CENTER" prefHeight="34.0" prefWidth="193.0">
                            <children>
-                              <Button mnemonicParsing="false" text="Load" />
-                              <Button mnemonicParsing="false" text="Save">
+                              <Button mnemonicParsing="false" text="Load" onAction="#loadEncryptedMessageFromFile"/>
+                              <Button mnemonicParsing="false" text="Save" onAction="#saveEncryptedMessageToFile">
                                  <HBox.margin>
                                     <Insets left="10.0" />
                                  </HBox.margin>
                               </Button>
                            </children>
                         </HBox>
-                        <TextArea prefHeight="400.0" prefWidth="200.0" wrapText="true" />
+                        <TextArea fx:id="encryptedTextField" prefHeight="400.0" prefWidth="200.0" wrapText="true" />
                      </children>
                   </VBox>
                </children>
