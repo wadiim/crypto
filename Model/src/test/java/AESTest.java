@@ -108,4 +108,11 @@ public class AESTest {
         byte[] decryptedText = aes.decrypt(ciphertext);
         Assertions.assertArrayEquals(plaintext, decryptedText);
     }
+
+    @Test
+    public void testGetKey() {
+        byte[] key = "0123456789abcdef".getBytes();
+        AES aes = new AES(key);
+        assertEquals(key, aes.getKey());
+    }
 }

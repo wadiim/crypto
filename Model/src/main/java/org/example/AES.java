@@ -17,6 +17,9 @@ public class AES implements Cipher {
         this.key = key;
         expandKey();
     }
+    public byte[] getKey() {
+        return this.key;
+    }
     public void expandKey() {
         this.roundKeys = extendKey(this.key);
     }
