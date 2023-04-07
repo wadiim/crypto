@@ -363,14 +363,14 @@ public class AES implements Cipher {
     }
 
     byte changeSBox(byte b) {
-        byte higherFourBytes = 0, lowerFourBytes = 0;
+        byte higherFourBytes, lowerFourBytes;
         higherFourBytes = (byte) ((byte) (b >> 4) & 0x0f);
         lowerFourBytes = (byte) (b & 0x0f);
         return (byte) SBox[higherFourBytes][lowerFourBytes];
     }
 
     byte invChangeSBox(byte b) {
-        byte higherFourBytes = 0, lowerFourBytes = 0;
+        byte higherFourBytes, lowerFourBytes;
         higherFourBytes = (byte) ((byte) (b >> 4) & 0x0f);
         lowerFourBytes = (byte) (b & 0x0f);
         return (byte) invSBox[higherFourBytes][lowerFourBytes];
