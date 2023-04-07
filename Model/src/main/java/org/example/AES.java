@@ -8,6 +8,17 @@ public class AES implements Cipher {
     private byte[][] roundKeys;
     private Random rand;
 
+    public enum KEY_LENGTH {
+        SHORT (128),
+        MEDIUM (192),
+        LONG (256);
+
+        public final int numOfBits;
+        KEY_LENGTH(int numOfBits) {
+            this.numOfBits = numOfBits;
+        }
+    }
+
     public AES() {
         rand = new Random();
     }
@@ -28,8 +39,8 @@ public class AES implements Cipher {
     public void expandKey() {
         this.roundKeys = extendKey(this.key);
     }
-    public void generateKey() {
-        byte[] key = new byte[16];
+    public void generateKey(KEY_LENGTH length) {
+        byte[] key = new byte[length.numOfBits / Byte.SIZE];
         rand.nextBytes(key);
         this.setKey(key);
     }

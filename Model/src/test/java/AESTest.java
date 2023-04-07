@@ -102,11 +102,32 @@ public class AESTest {
     @Test
     public void testGenerateKeyIfThenEncryptDecryptWorks() {
         AES aes = new AES();
-        aes.generateKey();
+        aes.generateKey(AES.KEY_LENGTH.SHORT);
         byte[] plaintext = "Hello, world!".getBytes();
         byte[] ciphertext = aes.encrypt(plaintext);
         byte[] decryptedText = aes.decrypt(ciphertext);
         Assertions.assertArrayEquals(plaintext, decryptedText);
+    }
+
+    @Test
+    public void testGenerateKeyIfShortLengthSpecifiedThenGeneratesKeyOfSize128Bits() {
+        AES aes = new AES();
+        aes.generateKey(AES.KEY_LENGTH.SHORT);
+        Assertions.assertEquals(128 / Byte.SIZE, aes.getKey().length);
+    }
+
+    @Test
+    public void testGenerateKeyIfMediumLengthSpecifiedThenGeneratesKeyOfSize192Bits() {
+        AES aes = new AES();
+        aes.generateKey(AES.KEY_LENGTH.MEDIUM);
+        Assertions.assertEquals(192 / Byte.SIZE, aes.getKey().length);
+    }
+
+    @Test
+    public void testGenerateKeyIfLongLengthSpecifiedThenGeneratesKeyOfSize256Bits() {
+        AES aes = new AES();
+        aes.generateKey(AES.KEY_LENGTH.LONG);
+        Assertions.assertEquals(256 / Byte.SIZE, aes.getKey().length);
     }
 
     @Test

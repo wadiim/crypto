@@ -46,7 +46,7 @@ public class AESController extends Application {
     }
 
     public void generateKey(ActionEvent actionEvent) {
-        aes.generateKey();
+        aes.generateKey(AES.KEY_LENGTH.SHORT);
         keyField.setText(Convert.convertByteArrayToHexString(aes.getKey()));
     }
 
