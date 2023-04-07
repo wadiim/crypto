@@ -5,6 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
@@ -23,6 +24,8 @@ public class AESController extends Application {
     public TextArea plainTextField;
     @FXML
     public TextArea encryptedTextField;
+    @FXML
+    public ChoiceBox keyLengthChoiceBox;
 
     private final AES aes;
 
@@ -46,7 +49,16 @@ public class AESController extends Application {
     }
 
     public void generateKey(ActionEvent actionEvent) {
-        aes.generateKey(AES.KEY_LENGTH.SHORT);
+        AES.KEY_LENGTH length;
+        if (keyLengthChoiceBox.getValue() == keyLengthChoiceBox.getItems().get(0)) {
+            length = AES.KEY_LENGTH.SHORT;
+        } else if (keyLengthChoiceBox.getValue() == keyLengthChoiceBox.getItems().get(1)) {
+            length = AES.KEY_LENGTH.MEDIUM;
+        } else {
+            length = AES.KEY_LENGTH.LONG;
+        }
+
+        aes.generateKey(length);
         keyField.setText(Convert.convertByteArrayToHexString(aes.getKey()));
     }
 
