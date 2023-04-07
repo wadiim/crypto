@@ -33,6 +33,15 @@ public class AES implements Cipher {
         this.key = key;
         expandKey();
     }
+    private int getNumOfRounds() {
+        if (key.length * Byte.SIZE == KEY_LENGTH.SHORT.numOfBits) {
+            return 10;
+        } else if (key.length * Byte.SIZE == KEY_LENGTH.MEDIUM.numOfBits) {
+            return 12;
+        } else {
+            return 14;
+        }
+    }
     public byte[] getKey() {
         return this.key;
     }
@@ -107,37 +116,41 @@ public class AES implements Cipher {
     public byte[] cipher(byte[] data) {
         byte[] dataBlock = new byte[data.length];
         System.arraycopy(data,0,dataBlock,0,data.length);
-        // Round 0
+
+        int numOfRounds = getNumOfRounds();
+
         dataBlock = addRoundKey(dataBlock, 0);
-        // Round 1-9
-        for (int i = 1; i < 10; i++) {
+
+        for (int i = 1; i < numOfRounds; i++) {
             dataBlock = subBytes(dataBlock);
             dataBlock = shiftRows(dataBlock);
             dataBlock = mixColumns(dataBlock);
             dataBlock = addRoundKey(dataBlock, i);
         }
-        // Round 10
+
         dataBlock = subBytes(dataBlock);
         dataBlock = shiftRows(dataBlock);
-        dataBlock = addRoundKey(dataBlock, 10);
+        dataBlock = addRoundKey(dataBlock, numOfRounds);
         return dataBlock;
     }
 
     public byte[] invCipher(byte[] dataBlock) {
         byte[] temporaryDataBlock = new byte[dataBlock.length];
         System.arraycopy(dataBlock,0,temporaryDataBlock,0,dataBlock.length);
-        // Round 10
-        temporaryDataBlock = addRoundKey(temporaryDataBlock, 10);
+
+        int numOfRounds = getNumOfRounds();
+
+        temporaryDataBlock = addRoundKey(temporaryDataBlock, numOfRounds);
         temporaryDataBlock = invShiftRows(temporaryDataBlock);
         temporaryDataBlock = invSubBytes(temporaryDataBlock);
-        // Round 9-1
-        for (int i = 9; i > 0; i--) {
+
+        for (int i = numOfRounds - 1; i > 0; i--) {
             temporaryDataBlock = addRoundKey(temporaryDataBlock, i);
             temporaryDataBlock = invMixColumns(temporaryDataBlock);
             temporaryDataBlock = invShiftRows(temporaryDataBlock);
             temporaryDataBlock = invSubBytes(temporaryDataBlock);
         }
-        // Round 0
+
         temporaryDataBlock = addRoundKey(temporaryDataBlock, 0);
         return temporaryDataBlock;
     }
@@ -394,15 +407,16 @@ public class AES implements Cipher {
     }
 
     public byte[][] extendKey(byte[] primaryKey) {
-        byte[][] extendKey = new byte[44][4];
+        int numOfRounds = getNumOfRounds();
+        byte[][] extendKey = new byte[4 * (numOfRounds + 1)][4];
         int a = 0;
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
                 extendKey[i][j] = primaryKey[a];
             }
         }
-        // Create keys for all 10 rounds
-        for(int i = 4; i<=43;i++)
+        // Create keys for all rounds
+        for(int i = 4; i<4 * (numOfRounds + 1);i++)
         {
             if(i%4==0) {
                 byte[] secondParameter = functionG(extendKey[i-1], i/4);

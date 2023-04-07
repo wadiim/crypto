@@ -17,6 +17,28 @@ public class AESTest {
     }
 
     @Test
+    void encryptDecryptTestForKeyLengthOf192Bits()
+    {
+        AES aes = new AES();
+        aes.generateKey(AES.KEY_LENGTH.MEDIUM);
+        byte[] plaintext = "Hello, world!".getBytes();
+        byte[] ciphertext = aes.encrypt(plaintext);
+        byte[] decryptedText = aes.decrypt(ciphertext);
+        Assertions.assertArrayEquals(plaintext, decryptedText);
+    }
+
+    @Test
+    void encryptDecryptTestForKeyLengthOf256Bits()
+    {
+        AES aes = new AES();
+        aes.generateKey(AES.KEY_LENGTH.LONG);
+        byte[] plaintext = "Hello, world!".getBytes();
+        byte[] ciphertext = aes.encrypt(plaintext);
+        byte[] decryptedText = aes.decrypt(ciphertext);
+        Assertions.assertArrayEquals(plaintext, decryptedText);
+    }
+
+    @Test
     void testEncryptAndDecryptNull() {
         byte[] plaintext = null;
         Assertions.assertThrows(NullPointerException.class, () -> aes.encrypt(plaintext));
