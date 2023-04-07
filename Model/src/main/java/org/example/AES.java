@@ -126,7 +126,7 @@ public class AES implements Cipher {
     }
 
     /*
-        Transformation in the org.example.Cipher that takes all of the columns
+        Transformation in the org.example.Cipher that takes all the columns
         of the State and mixes their data (independently of one another)
         to produce new columns.
     */
@@ -231,9 +231,9 @@ public class AES implements Cipher {
         byte newDataMatrix[][] = new byte[4][4];
 
         newDataMatrix[0] = dataMatrix[0];
-        for (int wiersz = 1; wiersz < dataMatrix.length; wiersz++)
-            for (int kolumna = 0; kolumna < dataMatrix[wiersz].length; kolumna++)
-                newDataMatrix[wiersz][kolumna] = dataMatrix[wiersz][(kolumna + wiersz) % 4];
+        for (int row = 1; row < dataMatrix.length; row++)
+            for (int col = 0; col < dataMatrix[row].length; col++)
+                newDataMatrix[row][col] = dataMatrix[row][(col + row) % 4];
 
         return oneDimensionalArray(newDataMatrix);
     }
@@ -281,13 +281,13 @@ public class AES implements Cipher {
          Transformation in the org.example.Cipher and Inverse org.example.Cipher in which a Round
          Key is added to the State using an XOR operation.
      */
-    public byte[] addRoundKey(byte[] dataBlock, int runda) {
+    public byte[] addRoundKey(byte[] dataBlock, int round) {
         byte[] temporaryDataBlock = new byte[16];
 
         int a = 0;
         while((a/4)<4) {
             for(int j = 0; j<4;j++) {
-                temporaryDataBlock[a] = (byte) (dataBlock[a] ^ roundKeys[(runda*4)+(a/4)][j]);
+                temporaryDataBlock[a] = (byte) (dataBlock[a] ^ roundKeys[(round*4)+(a/4)][j]);
                 a++;
             }
         }
@@ -315,8 +315,8 @@ public class AES implements Cipher {
         for (int i = 0; i < 8; i++)
             for (int j = 0; j < 8; j++)
             {
-                firstByteIthByte = firstByte & (1 << i); // Picking the ith coefficient from the first number
-                secondByteIthByte = secondByte & (1 << j); // Picking the jth coefficient from the second number
+                firstByteIthByte = firstByte & (1 << i); // Picking the i-th coefficient from the first number
+                secondByteIthByte = secondByte & (1 << j); // Picking the j-th coefficient from the second number
                 if (firstByteIthByte != 0 && secondByteIthByte != 0) // Multiplying coefficients together. Result 1 if both are different from 0
                 {
                     result ^= (1 << (i + j)); // Adds one of degree j+i. It is of degree j+i because when you multiply x^firstByte*x^secondByte you get x^(firstByte+secondByte). We use the xor operation because it is an addition in the field 2^8
@@ -388,8 +388,8 @@ public class AES implements Cipher {
         for(int i = 4; i<=43;i++)
         {
             if(i%4==0) {
-                byte[] secondParametr = functionG(extendKey[i-1], i/4);
-                extendKey[i] = XOROperation(extendKey[i-4],secondParametr);
+                byte[] secondParameter = functionG(extendKey[i-1], i/4);
+                extendKey[i] = XOROperation(extendKey[i-4],secondParameter);
             }
             else
                 extendKey[i] = XOROperation(extendKey[i-1], extendKey[i-4]);
@@ -398,7 +398,7 @@ public class AES implements Cipher {
     }
 
     /*
-        The G function, which is ShiftRow,SwapByte and XOR with the round constant Rcon.
+        The G function, which is ShiftRow, SwapByte, and XOR with the round constant Rcon.
      */
     public byte[] functionG(byte[] word, int round) {
         byte first = word[0];
@@ -435,7 +435,7 @@ public class AES implements Cipher {
 
     /*
         Non-linear substitution table used in several byte substitution
-        transformations and in the Key Expansion routine to perform a onefor-one substitution of a byte value.
+        transformations and in the Key Expansion routine to perform a one-for-one substitution of a byte value.
      */
     public int[][] SBox = {
             {0x63, 0x7c, 0x77, 0x7b, 0xf2, 0x6b, 0x6f, 0xc5, 0x30, 0x01, 0x67, 0x2b, 0xfe, 0xd7, 0xab, 0x76},
