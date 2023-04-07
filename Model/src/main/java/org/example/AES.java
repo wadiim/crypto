@@ -4,8 +4,8 @@ import java.util.Random;
 
 public class AES implements Cipher {
 
-    public byte[] key;
-    public byte[][] roundKeys;
+    private byte[] key;
+    private byte[][] roundKeys;
     private Random rand;
 
     public AES() {
