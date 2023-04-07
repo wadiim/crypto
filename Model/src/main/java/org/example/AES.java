@@ -1,19 +1,24 @@
 package org.example;
 
-import java.math.BigInteger;
 import java.util.Random;
 
 public class AES implements Cipher {
 
     public byte[] key;
     public byte[][] roundKeys;
+    private Random rand;
 
     public AES() {
+        rand = new Random();
     }
     public AES(byte[] key) {
+        super();
         setKey(key);
     }
     public void setKey(byte[] key) {
+        if (key.length != (128 / Byte.SIZE) && key.length != (192 / Byte.SIZE) && key.length != (256 / Byte.SIZE)) {
+            throw new RuntimeException("Failed to set key - Invalid length");
+        }
         this.key = key;
         expandKey();
     }
@@ -24,8 +29,9 @@ public class AES implements Cipher {
         this.roundKeys = extendKey(this.key);
     }
     public void generateKey() {
-        BigInteger keyBig = new BigInteger(128, new Random());
-        setKey(keyBig.toByteArray());
+        byte[] key = new byte[16];
+        rand.nextBytes(key);
+        this.setKey(key);
     }
 
     @Override

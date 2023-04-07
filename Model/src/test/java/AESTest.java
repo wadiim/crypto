@@ -115,4 +115,32 @@ public class AESTest {
         AES aes = new AES(key);
         assertEquals(key, aes.getKey());
     }
+
+    @Test
+    public void TestSetKeyIfTheKeyLengthIs128BitsThenNoExceptionIsThrown() {
+        byte[] key = "0123456789abcdef".getBytes();
+        AES aes = new AES();
+        assertDoesNotThrow(() -> aes.setKey(key));
+    }
+
+    @Test
+    public void TestSetKeyIfTheKeyLengthIs192BitsThenNoExceptionIsThrown() {
+        byte[] key = "0123456789abcdef01234567".getBytes();
+        AES aes = new AES();
+        assertDoesNotThrow(() -> aes.setKey(key));
+    }
+
+    @Test
+    public void TestSetKeyIfTheKeyLengthIs256BitsThenNoExceptionIsThrown() {
+        byte[] key = "0123456789abcdef0123456789abcdef".getBytes();
+        AES aes = new AES();
+        assertDoesNotThrow(() -> aes.setKey(key));
+    }
+
+    @Test
+    public void TestSetKeyIfTheKeyLengthIsInvalidThenThrowsAnException() {
+        byte[] key = "0123456789abc".getBytes();
+        AES aes = new AES();
+        assertThrows(Exception.class, () -> aes.setKey(key));
+    }
 }
