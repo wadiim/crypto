@@ -225,10 +225,10 @@ public class AES implements Cipher {
         Transformation in the org.example.Cipher that processes the State by cyclically
         shifting the last three rows of the State by different offsets.
      */
-    public byte[] shiftRows(byte dataBlock[]) {
+    public byte[] shiftRows(byte[] dataBlock) {
 
-        byte dataMatrix[][] = createColumnMatrix(dataBlock);
-        byte newDataMatrix[][] = new byte[4][4];
+        byte[][] dataMatrix = createColumnMatrix(dataBlock);
+        byte[][] newDataMatrix = new byte[4][4];
 
         newDataMatrix[0] = dataMatrix[0];
         for (int row = 1; row < dataMatrix.length; row++)
@@ -244,7 +244,7 @@ public class AES implements Cipher {
     public byte[] invShiftRows(byte[] dataBlock) {
 
         byte[][] dataMatrix = createColumnMatrix(dataBlock);
-        byte newDataMatrix[][] = new byte[4][4];
+        byte[][] newDataMatrix = new byte[4][4];
 
         newDataMatrix[0] = dataMatrix[0];
         for (int rows = 1; rows < dataMatrix.length; rows++)
