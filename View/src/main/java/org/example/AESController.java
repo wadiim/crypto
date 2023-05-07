@@ -27,6 +27,9 @@ public class AESController extends Application {
     @FXML
     public ChoiceBox keyLengthChoiceBox;
 
+    private byte[] message;
+    private boolean messageFromFile = false;
+
     private final AES aes;
 
     {
@@ -77,11 +80,10 @@ public class AESController extends Application {
         setKey(); // Needed, because listener seems to not always work for some reason.
 
         try {
-            encryptedTextField.setText(Convert.convertByteArrayToHexString(
-                    aes.encrypt(plainTextField
-                            .getText()
-                            .getBytes(StandardCharsets.UTF_8))
-            ));
+            if (!messageFromFile) {
+                message = plainTextField.getText().getBytes(StandardCharsets.UTF_8);
+            }
+            encryptedTextField.setText(Convert.convertByteArrayToHexString(aes.encrypt(message)));
         } catch (Exception e) {
             Dialog.display("Error", e.getMessage());
         }
@@ -91,9 +93,8 @@ public class AESController extends Application {
         setKey(); // Needed, because listener seems to not always work for some reason.
 
         try {
-            String decrypted = new String(aes.decrypt(Convert.convertHexStringToByteArray(encryptedTextField.getText())),
-                    StandardCharsets.UTF_8);
-            plainTextField.setText(decrypted);
+            message = aes.decrypt(Convert.convertHexStringToByteArray(encryptedTextField.getText()));
+            plainTextField.setText(new String(message, StandardCharsets.UTF_8));
         } catch (Exception e) {
             Dialog.display("Error", e.getMessage());
         }
@@ -120,7 +121,10 @@ public class AESController extends Application {
     public void loadMessageFromFile(ActionEvent actionEvent) {
         FileChooser fc = new FileChooser();
         try (FileInputStream fs = new FileInputStream(fc.showOpenDialog(aesForm.getScene().getWindow()).getPath())) {
-            plainTextField.setText(new String(fs.readAllBytes(), StandardCharsets.UTF_8));
+            message = fs.readAllBytes();
+            plainTextField.setText(new String(message, StandardCharsets.UTF_8));
+            plainTextField.setDisable(true);
+            messageFromFile = true;
         } catch (IOException e) {
             Dialog.display("Error", e.getMessage());
         }
@@ -129,7 +133,11 @@ public class AESController extends Application {
     public void saveMessageToFile(ActionEvent actionEvent) {
         FileChooser fc = new FileChooser();
         try (FileOutputStream fs = new FileOutputStream(fc.showSaveDialog(aesForm.getScene().getWindow()).getPath())) {
-            fs.write(plainTextField.getText().getBytes(StandardCharsets.UTF_8));
+            if (messageFromFile) {
+                fs.write(message);
+            } else {
+                fs.write(plainTextField.getText().getBytes(StandardCharsets.UTF_8));
+            }
         } catch (IOException e) {
             Dialog.display("Error", e.getMessage());
         }
@@ -139,6 +147,8 @@ public class AESController extends Application {
         FileChooser fc = new FileChooser();
         try (FileInputStream fs = new FileInputStream(fc.showOpenDialog(aesForm.getScene().getWindow()).getPath())) {
             encryptedTextField.setText(Convert.convertByteArrayToHexString(fs.readAllBytes()));
+            plainTextField.setDisable(true);
+            messageFromFile = true;
         } catch (IOException e) {
             Dialog.display("Error", e.getMessage());
         }
