@@ -377,4 +377,32 @@ public class DSATest {
         dsa.setKeys(y, x);
         assertFalse(dsa.verify(message, dsa.sign(new byte[] { 0x02, 0x13, 0x37 })));
     }
+
+    @Test
+    void TestIsPrimeIfNegativeNumberThenReturnsFalse() {
+        assertFalse(DSA.isPrime(BigInteger.ZERO.subtract(BigInteger.TWO), 2));
+    }
+
+    @Test
+    void TestIsPrimeIfZeroOrOneOrFourThenReturnsFalse() {
+        assertFalse(DSA.isPrime(BigInteger.ZERO, 2));
+        assertFalse(DSA.isPrime(BigInteger.ONE, 2));
+        assertFalse(DSA.isPrime(BigInteger.TWO.add(BigInteger.TWO), 2));
+    }
+
+    @Test
+    void TestIsPrimeIfTwoOrThreeThenReturnsTrue() {
+        assertTrue(DSA.isPrime(BigInteger.TWO, 2));
+        assertTrue(DSA.isPrime(BigInteger.TWO.add(BigInteger.ONE), 2));
+    }
+
+    @Test
+    void TestIsPrimeIfBigNonPrimeNumberThenReturnsFalse() {
+        assertFalse(DSA.isPrime(new BigInteger("1446700333"), 2));
+    }
+
+    @Test
+    void TestIsPrimeIfBigPrimeNumberThenReturnsTrue() {
+        assertTrue(DSA.isPrime(new BigInteger("2147483647"), 2));
+    }
 }

@@ -86,7 +86,7 @@ public class DSA implements Signature {
             // Calculate p
             p = X.subtract(c.subtract(BigInteger.ONE));
 
-            if (p.isProbablePrime(2)) {
+            if (isPrime(p, 2)) {
                 break;
             }
 
@@ -201,7 +201,7 @@ public class DSA implements Signature {
         BigInteger qBig = new BigInteger(1, q);
         BigInteger gBig = new BigInteger(1, g);
 
-        if (! pBig.isProbablePrime(2)) {
+        if (! isPrime(pBig, 2)) {
             throw new RuntimeException("Invalid value of the p domain parameter - not a prime");
         }
         if (! pBig.subtract(BigInteger.ONE).mod(qBig).equals(BigInteger.ZERO)) {
@@ -228,6 +228,57 @@ public class DSA implements Signature {
 
     public byte[] getG() {
         return (g != null) ? removeLeadingZeroByte(g.toByteArray()) : null;
+    }
+
+    public static boolean isPrime(BigInteger number, int certainty) {
+        if (number.compareTo(BigInteger.ONE) <= 0 || number.compareTo(BigInteger.TWO.add(BigInteger.TWO)) == 0) {
+            return false;
+        }
+        if (number.compareTo(BigInteger.TWO.add(BigInteger.ONE)) <= 0) {
+            return true;
+        }
+
+        BigInteger d = number.subtract(BigInteger.ONE);
+
+        while (d.mod(BigInteger.TWO).equals(BigInteger.ZERO)) {
+            d = d.shiftRight(1); // d /= 2
+        }
+
+        for (int i = 0; i < certainty; ++i) {
+            if (!millerRabinTest(number, d)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private static boolean millerRabinTest(BigInteger number, BigInteger odd) {
+        // Pick a random number in [2..number-2]
+        BigInteger a;
+        do {
+            a  = new BigInteger(number.bitLength(), new Random());
+        } while (a.compareTo(BigInteger.TWO) < 0 || a.compareTo(number.subtract(BigInteger.TWO)) > 0);
+
+        BigInteger x = a.modPow(odd, number);
+
+        if (x.equals(BigInteger.ONE) || x.equals(number.subtract(BigInteger.ONE))) {
+            return true;
+        }
+
+        while (!odd.equals(number.subtract(BigInteger.ONE))) {
+            x = x.modPow(x, number);
+            odd = odd.shiftLeft(1); // odd *= 2
+
+            if (x.equals(BigInteger.ONE)) {
+                return false;
+            }
+            if (x.equals(number.subtract(BigInteger.ONE))) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private static byte[] longToByteArray(long value) {
