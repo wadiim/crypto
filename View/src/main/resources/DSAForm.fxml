@@ -120,12 +120,12 @@
                      <children>
                         <HBox alignment="TOP_CENTER" prefHeight="34.0" prefWidth="196.0">
                            <children>
-                              <Button mnemonicParsing="false" text="Load">
+                              <Button mnemonicParsing="false" text="Load" onAction="#loadMessageFromFile">
                                  <HBox.margin>
                                     <Insets right="10.0" />
                                  </HBox.margin>
                               </Button>
-                              <Button mnemonicParsing="false" text="Save" />
+                              <Button mnemonicParsing="false" text="Save" onAction="#saveMessageToFile"/>
                            </children>
                         </HBox>
                         <TextArea fx:id="messageField" prefHeight="222.0" prefWidth="196.0" wrapText="true" />
@@ -147,12 +147,12 @@
                            <children>
                               <HBox alignment="TOP_CENTER" prefHeight="34.0" prefWidth="196.0">
                                  <children>
-                                    <Button mnemonicParsing="false" text="Load">
+                                    <Button mnemonicParsing="false" text="Load" onAction="#loadSignatureFromFile">
                                        <HBox.margin>
                                           <Insets right="10.0" />
                                        </HBox.margin>
                                     </Button>
-                                    <Button mnemonicParsing="false" text="Save" />
+                                    <Button mnemonicParsing="false" text="Save" onAction="#saveSignatureToFile"/>
                                  </children>
                               </HBox>
                               <TextArea fx:id="signatureField" prefHeight="221.0" prefWidth="196.0" wrapText="true" />
