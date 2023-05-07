@@ -104,8 +104,10 @@ public class DSA implements Signature {
 
         // Calculate key pair (see section B.1.2 of DSS)
         BigInteger c;
+        long tmp = seed;
         do {
-            c = new BigInteger(N, new Random());
+            c = new BigInteger(N, new Random(tmp));
+            tmp = new Random(tmp).nextInt();
         } while (c.compareTo(q.subtract(BigInteger.TWO)) > 0);
         x = c.add(BigInteger.ONE);
         y = g.modPow(x, p);
@@ -308,8 +310,10 @@ public class DSA implements Signature {
      */
     private void generateSecretNumber() {
         BigInteger c;
+        long tmp = seed;
         do {
-            c = new BigInteger(N, new Random());
+            c = new BigInteger(N, new Random(tmp));
+            tmp = new Random(tmp).nextInt();
         } while (c.compareTo(q.subtract(BigInteger.TWO)) > 0);
         k = c.add(BigInteger.ONE);
     }
